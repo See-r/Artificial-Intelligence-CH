@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<title>智能体与环境</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.cn/w3css/4/w3.css">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>搜索</title>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <link rel="stylesheet" href="./css/Romania.css">
+  <link rel="stylesheet" href="./css/DFS_BFS.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>  
+  <script src="./js/DFS_BFS.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="w3-sidebar w3-light-grey w3-bar-block" style="width:15%">
+  <a href="./index.html"><h3 class="w3-bar-item">人工智能</h3></a>
+  <a href="./lec2.html" class="w3-bar-item w3-button w3-large">智能体与环境</a>
+  <ul>
+    <li><a href="#title-1-1" class="w3-bar-item w3-button">智能体与环境</a></li>
+    <li><a href="#title-1-2" class="w3-bar-item w3-button">理性</a></li>
+    <li><a href="#title-1-3"class="w3-bar-item w3-button">PEAS</a></li>
+    <li><a href="#title-1-4" class="w3-bar-item w3-button">环境类型</a></li>
+    <li><a href="#title-1-5" class="w3-bar-item w3-button">智能体类型</a></li>
+    <li><a href="#title-1-6" class="w3-bar-item w3-button">总结</a></li>
+  </ul>
+  <a href="./lec3.html" class="w3-bar-item w3-button w3-large">盲搜</a>
+  <a href="./lec4.html" class="w3-bar-item w3-button w3-large">启发式搜索</a>
+  <a href="./lec5.html" class="w3-bar-item w3-button w3-large">Local search</a>
+  <a href="./lec6.html" class="w3-bar-item w3-button w3-large">Adversarial Search</a>
+  <a href="./lec7.html" class="w3-bar-item w3-button w3-large">Expectimax Search</a>
+  <a href="./lec8.html" class="w3-bar-item w3-button w3-large">Markov Decision Process</a>
+</div>
+
+<!-- Page Content -->
+<div style="margin-left:15%">
+    <div class="w3-container w3-teal">
+        <h1 id="title-1-1">智能体与环境        </h1>
+    </div>
+    <div class="w3-container"> 
+      <br>
+      <img src="./image/lec2_2.png" alt="" style="width:50%;position: relative; left: 280px;">
+    <font size="5">
+      <ul>
+        <font size="5">
+        <li>智能体通过感知器感知环境，并且通过执行器做出反应
+        </li>
+        <li>人类是智能体吗？        </li>
+        <li>珍计算器是智能体吗？</li>
+        <li>人工智能更聚焦于具有大型计算资源的智能体和需要非平凡决策的环境        </li>
+        <br>
+        </font>
+    </ul>
+  </font>
+    
+    </div>    
+<div class="w3-container w3-teal">
+
+  <h1 id="title-1-2">理性  </h1>
+</div>
+<div class="w3-container"> 
+  <br>
+<font size="5">
+  <ul>
+    <font size="5">
+    <li>理性智能体 无所不能？</li>
+    <li>理性智能体 洞察一切？</li>
+    <li>理性智能体是否 探索 和 学习？</li>
+    <li>理性智能体是否会犯错？</li>
+    <li>理性智能体 是否自主 (即超越初始程序)？</li>
+    <br>
+    </font>
+</ul>
+</font>
+</div> 
+<div class="w3-container w3-teal">
+  <h1 id="title-1-3">PEAS </h1>
+</div> 
+<ul>
+  <br>
+  <font size="4">
+  <li>P: 性能度量 Performance measure</li>
+  <li>E: 环境 Environment</li>
+  <li>A: 执行器 Actuators</li>
+  <li>S: 感知器 Actuators</li>
+</font>
+</ul>  
+<br>
+<h2 style="position: relative;">
+  <font size="6">Pacman游戏中的人类智能体  </font> 
+  <br>
+  <video loop="loop" controls="controls" poster="" style="width:70%; position: relative; left:200px">
+    <source src="./video/lec2-1.mp4" type="video/mp4"></source>
+  </video>
+</h2>
+<br>
+<h2 style="position: relative;">
+  <font size="6">任务环境 – PEAS描述  </font> <img src="./image/lec2_3.jpg" alt="" style="width:35%; float:right; margin: 30px;">
+</h2>
+  <font size="5">
+    <ul>
+      <font size="5">
+      <li>性能度量（P）</li>
+      <p>-1 每步移动; + 10 食物; +500 胜; -500 败; +200 击中受惊吓的幽灵</p>
+      <li>环境（E）</li>
+      <p>Pacman 动态变化，包括幽灵的行为</p>
+      <li>执行器（A）</li>
+      <p>上下左右-动作</p>
+      <li>感知器（S）</li>
+      <p>整个状态都是可见的，除了能量丸存续时长</p>
+      <br>
+      </font>
+  </ul>
+  </font>
+<br>
+<h2 style="position: relative;">
+  <font size="6">PEAS: 自动驾驶出租车  </font> <img src="./image/lec2_4.png" alt="" style="width:25%;position: relative; float:right; margin: 60px">
+</h2>
+  <font size="5">
+    <ul>
+      <font size="5">
+      <li>性能度量 </li>
+      <p>收入，车辆成本，顾客满意度，罚款，保费</p>
+      <li>环境</li>
+      <p>街道，顾客，驾驶员，天气，警察</p>
+      <li>执行器</li>
+      <p>方向盘，刹车，油门，显示屏</p>
+      <li>感知器</li>
+      <p>相机，雷达，话筒，GPS      </p>
+      <br>
+      </font>
+  </ul>
+  <h2 style="position: relative;">
+    <br>
+    <br>
+    <br>
+    <font size="6">PEAS: 医疗诊断系统</font> 
+  </h2>
+    <font size="5">
+      <ul><img src="./image/lec2_5.png" alt="" style="width:40%;position: relative; left: 280px;">
+        <font size="5">
+        <li>性能度量</li>
+        <p>病人健康状况，开销，口碑</p>
+        <li>环境</li>
+        <p>病人，医护，保险公司，法院</p>
+        <li>执行器</li>
+        <p>屏幕显示、发送邮件</p>
+        <li>感知器</li>
+        <p>键盘、鼠标
+        </p>
+        <br>
+        </font>
+    </ul>
+<div class="w3-container w3-teal">
+  <h1 id="title-1-4">环境类型  </h1>
+</div>    
+<br>
+<div class="w3-container">
+  <img src="./image/lec2-11.png" alt="" style="width:50%;position: relative; left: 280px">
+  <br>
+<br>
+</div>
+<br>
+<div class="w3-container w3-teal">
+  <h1 id="title-1-5">智能体类型  </h1>
+</div>
+<br>
+<div class="w3-container">
+  <h2 style="position: relative;">
+    <font size="6">智能体设计</font> 
+  </h2>
+  <p>环境类型很大程度上决定智能体设计</p>
+    <ul>
+      <li>部分可观察 => 智能体需要内存</li>
+      <li>随机 => 智能体需要为突发情况做好准备</li>
+      <li>多智能体 => 竞争 或 合作</li>
+      <li>静态 => 智能体有时间计算出一个理性决策</li>
+      <li>连续 => 连续运行的控制器</li>
+      <li>未知 => 需要探索</li>
+      <li>未知性能度量 =>  观察/按人类原则互动</li>
+      <br>
+  </ul>
+  <h2 style="position: relative;">
+    <font size="6">智能体类型</font> 
+  </h2>
+  <p>按照递增的通用性和复杂性排序</p>
+  <ul>
+    <li>Simple reflex agents （单反射性智能主体）</li>
+    <img src="./image/lec2_7.png" alt="" style="width:30%;position: relative; left: 280px;">
+    <br>
+    <li>Model-based reflex agents（基于模型的反射性智能主体）</li>
+    <img src="./image/lec2_8.png" alt="" style="width:30%;position: relative; left: 280px;">
+    <br>
+    <li>Goal-based agents （基于目标的智能主体）</li>
+    <img src="./image/lec2_9.png" alt="" style="width:30%;position: relative; left: 280px;">
+    <br>
+    <li>Utility-based agents （基于效用的智能主体）</li>
+    <img src="./image/lec2_10.png" alt="" style="width:30%;position: relative; left: 280px;">
+    <br>
+</ul>
+
+<div class="w3-container w3-teal">
+  <h1 id="title-1-6">总结</h1>
+</div>  
+    <ul>
+      <li>智能体通过感知器和执行器与环境交互</li>
+      <li>智能体函数由运行在机器上的智能体程序实现，描述了智能体在环境中的行为</li>
+      <li>理性智能体选择最大化期望效应的行动</li>
+      <li>PEAS描述定义任务环境；精确的PEAS规范至关重要并强烈影响智能体设计 </li>
+      <li>更复杂的环境需要更复杂的智能体设计和更复杂的表示</li>
+
+
+    </ul>
+</div>
+<br>
+</div> 
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+</html>
